@@ -3,7 +3,7 @@
 
 #include "clientmodel.h"
 #include "walletmodel.h"
-#include "bitcoinunits.h"
+#include "bytecoinunits.h"
 #include "optionsmodel.h"
 #include "transactiontablemodel.h"
 #include "transactionfilterproxy.h"
@@ -20,7 +20,7 @@ class TxViewDelegate : public QAbstractItemDelegate
 {
     Q_OBJECT
 public:
-    TxViewDelegate(): QAbstractItemDelegate(), unit(BitcoinUnits::BTC)
+    TxViewDelegate(): QAbstractItemDelegate(), unit(BytecoinUnits::BTC)
     {
 
     }
@@ -67,7 +67,7 @@ public:
             foreground = option.palette.color(QPalette::Text);
         }
         painter->setPen(foreground);
-        QString amountText = BitcoinUnits::formatWithUnit(unit, amount, true);
+        QString amountText = BytecoinUnits::formatWithUnit(unit, amount, true);
         if(!confirmed)
         {
             amountText = QString("[") + amountText + QString("]");
@@ -136,9 +136,9 @@ void OverviewPage::setBalance(qint64 balance, qint64 unconfirmedBalance, qint64 
     currentBalance = balance;
     currentUnconfirmedBalance = unconfirmedBalance;
     currentImmatureBalance = immatureBalance;
-    ui->labelBalance->setText(BitcoinUnits::formatWithUnit(unit, balance));
-    ui->labelUnconfirmed->setText(BitcoinUnits::formatWithUnit(unit, unconfirmedBalance));
-    ui->labelImmature->setText(BitcoinUnits::formatWithUnit(unit, immatureBalance));
+    ui->labelBalance->setText(BytecoinUnits::formatWithUnit(unit, balance));
+    ui->labelUnconfirmed->setText(BytecoinUnits::formatWithUnit(unit, unconfirmedBalance));
+    ui->labelImmature->setText(BytecoinUnits::formatWithUnit(unit, immatureBalance));
 
     // only show immature (newly mined) balance if it's non-zero, so as not to complicate things
     // for the non-mining users

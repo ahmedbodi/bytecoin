@@ -1,7 +1,7 @@
 #include "optionsdialog.h"
 #include "ui_optionsdialog.h"
 
-#include "bitcoinunits.h"
+#include "bytecoinunits.h"
 #include "monitoreddatamapper.h"
 #include "netbase.h"
 #include "optionsmodel.h"
@@ -80,7 +80,7 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
         }
     }
 
-    ui->unit->setModel(new BitcoinUnits(this));
+    ui->unit->setModel(new BytecoinUnits(this));
 
     /* Widget-to-option mapper */
     mapper = new MonitoredDataMapper(this);
@@ -127,7 +127,7 @@ void OptionsDialog::setMapper()
 {
     /* Main */
     mapper->addMapping(ui->transactionFee, OptionsModel::Fee);
-    mapper->addMapping(ui->bitcoinAtStartup, OptionsModel::StartAtStartup);
+    mapper->addMapping(ui->bytecoinAtStartup, OptionsModel::StartAtStartup);
 
     /* Network */
     mapper->addMapping(ui->mapPortUpnp, OptionsModel::MapPortUPnP);

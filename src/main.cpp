@@ -1558,7 +1558,7 @@ static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck(void*) {
     vnThreadsRunning[THREAD_SCRIPTCHECK]++;
-    RenameThread("bitcoin-scriptch");
+    RenameThread("bytecoin-scriptch");
     scriptcheckqueue.Thread();
     vnThreadsRunning[THREAD_SCRIPTCHECK]--;
 }
@@ -3998,7 +3998,7 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// BitcoinMiner
+// BytecoinMiner
 //
 
 int static FormatHashBlocks(void* pbuffer, unsigned int len)
@@ -4484,25 +4484,25 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     return true;
 }
 
-void static ThreadBitcoinMiner(void* parg);
+void static ThreadBytecoinMiner(void* parg);
 
-static bool fGenerateBitcoins = false;
+static bool fGenerateBytecoins = false;
 static bool fLimitProcessors = false;
 static int nLimitProcessors = -1;
 
-void static BitcoinMiner(CWallet *pwallet)
+void static BytecoinMiner(CWallet *pwallet)
 {
     printf("BytecoinMiner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
 
     // Make this thread recognisable as the mining thread
-    RenameThread("bitcoin-miner");
+    RenameThread("bytecoin-miner");
 
     // Each thread has its own key and counter
     CReserveKey reservekey(pwallet);
     unsigned int nExtraNonce = 0;
 
-    while (fGenerateBitcoins)
+    while (fGenerateBytecoins)
     {
         if (fShutdown)
             return;
@@ -4511,7 +4511,7 @@ void static BitcoinMiner(CWallet *pwallet)
             Sleep(1000);
             if (fShutdown)
                 return;
-            if (!fGenerateBitcoins)
+            if (!fGenerateBytecoins)
                 return;
         }
 
@@ -4613,7 +4613,7 @@ void static BitcoinMiner(CWallet *pwallet)
             // Check for stop or if block needs to be rebuilt
             if (fShutdown)
                 return;
-            if (!fGenerateBitcoins)
+            if (!fGenerateBytecoins)
                 return;
             if (fLimitProcessors && vnThreadsRunning[THREAD_MINER] > nLimitProcessors)
                 return;
@@ -4639,35 +4639,35 @@ void static BitcoinMiner(CWallet *pwallet)
     }
 }
 
-void static ThreadBitcoinMiner(void* parg)
+void static ThreadBytecoinMiner(void* parg)
 {
     CWallet* pwallet = (CWallet*)parg;
     try
     {
         vnThreadsRunning[THREAD_MINER]++;
-        BitcoinMiner(pwallet);
+        BytecoinMiner(pwallet);
         vnThreadsRunning[THREAD_MINER]--;
     }
     catch (std::exception& e) {
         vnThreadsRunning[THREAD_MINER]--;
-        PrintException(&e, "ThreadBitcoinMiner()");
+        PrintException(&e, "ThreadBytecoinMiner()");
     } catch (...) {
         vnThreadsRunning[THREAD_MINER]--;
-        PrintException(NULL, "ThreadBitcoinMiner()");
+        PrintException(NULL, "ThreadBytecoinMiner()");
     }
     nHPSTimerStart = 0;
     if (vnThreadsRunning[THREAD_MINER] == 0)
         dHashesPerSec = 0;
-    printf("ThreadBitcoinMiner exiting, %d threads remaining\n", vnThreadsRunning[THREAD_MINER]);
+    printf("ThreadBytecoinMiner exiting, %d threads remaining\n", vnThreadsRunning[THREAD_MINER]);
 }
 
 
-void GenerateBitcoins(bool fGenerate, CWallet* pwallet)
+void GenerateBytecoins(bool fGenerate, CWallet* pwallet)
 {
-    fGenerateBitcoins = fGenerate;
+    fGenerateBytecoins = fGenerate;
     nLimitProcessors = GetArg("-genproclimit", -1);
     if (nLimitProcessors == 0)
-        fGenerateBitcoins = false;
+        fGenerateBytecoins = false;
     fLimitProcessors = (nLimitProcessors != -1);
 
     if (fGenerate)
@@ -4682,8 +4682,8 @@ void GenerateBitcoins(bool fGenerate, CWallet* pwallet)
         printf("Starting %d BytecoinMiner threads\n", nAddThreads);
         for (int i = 0; i < nAddThreads; i++)
         {
-            if (!NewThread(ThreadBitcoinMiner, pwallet))
-                printf("Error: NewThread(ThreadBitcoinMiner) failed\n");
+            if (!NewThread(ThreadBytecoinMiner, pwallet))
+                printf("Error: NewThread(ThreadBytecoinMiner) failed\n");
             Sleep(10);
         }
     }

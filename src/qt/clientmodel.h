@@ -20,7 +20,7 @@ enum BlockSource {
     BLOCK_SOURCE_REINDEX
 };
 
-/** Model for Bitcoin network client. */
+/** Model for Bytecoin network client. */
 class ClientModel : public QObject
 {
     Q_OBJECT

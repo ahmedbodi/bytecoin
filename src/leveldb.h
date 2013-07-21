@@ -1,8 +1,8 @@
 // Copyright (c) 2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef BITCOIN_LEVELDB_H
-#define BITCOIN_LEVELDB_H
+#ifndef BYTECOIN_LEVELDB_H
+#define BYTECOIN_LEVELDB_H
 
 #include "serialize.h"
 
@@ -150,4 +150,4 @@ public:
     }
 };
 
-#endif // BITCOIN_LEVELDB_H
+#endif // BYTECOIN_LEVELDB_H

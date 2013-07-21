@@ -410,7 +410,7 @@ bool GetMyExternalIP(CNetAddr& ipRet)
 void ThreadGetMyExternalIP(void* parg)
 {
     // Make this thread recognisable as the external IP detection thread
-    RenameThread("bitcoin-ext-ip");
+    RenameThread("bytecoin-ext-ip");
 
     CNetAddr addrLocalHost;
     if (GetMyExternalIP(addrLocalHost))
@@ -642,7 +642,7 @@ void CNode::copyStats(CNodeStats &stats)
 void ThreadSocketHandler(void* parg)
 {
     // Make this thread recognisable as the networking thread
-    RenameThread("bitcoin-net");
+    RenameThread("bytecoin-net");
 
     try
     {
@@ -997,7 +997,7 @@ void ThreadSocketHandler2(void* parg)
 void ThreadMapPort(void* parg)
 {
     // Make this thread recognisable as the UPnP thread
-    RenameThread("bitcoin-UPnP");
+    RenameThread("bytecoin-UPnP");
 
     try
     {
@@ -1058,7 +1058,7 @@ void ThreadMapPort2(void* parg)
             }
         }
 
-        string strDesc = "Bitcoin " + FormatFullVersion();
+        string strDesc = "Bytecoin " + FormatFullVersion();
 #ifndef UPNPDISCOVER_SUCCESS
         /* miniupnpc 1.5 */
         r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,
@@ -1158,7 +1158,7 @@ static const char *strTestNetDNSSeed[][2] = {
 void ThreadDNSAddressSeed(void* parg)
 {
     // Make this thread recognisable as the DNS seeding thread
-    RenameThread("bitcoin-dnsseed");
+    RenameThread("bytecoin-dnsseed");
 
     try
     {
@@ -1254,7 +1254,7 @@ void ThreadDumpAddress2(void* parg)
 void ThreadDumpAddress(void* parg)
 {
     // Make this thread recognisable as the address dumping thread
-    RenameThread("bitcoin-adrdump");
+    RenameThread("bytecoin-adrdump");
 
     try
     {
@@ -1269,7 +1269,7 @@ void ThreadDumpAddress(void* parg)
 void ThreadOpenConnections(void* parg)
 {
     // Make this thread recognisable as the connection opening thread
-    RenameThread("bitcoin-opencon");
+    RenameThread("bytecoin-opencon");
 
     try
     {
@@ -1430,7 +1430,7 @@ void ThreadOpenConnections2(void* parg)
 void ThreadOpenAddedConnections(void* parg)
 {
     // Make this thread recognisable as the connection opening thread
-    RenameThread("bitcoin-opencon");
+    RenameThread("bytecoin-opencon");
 
     try
     {
@@ -1577,7 +1577,7 @@ bool OpenNetworkConnection(const CAddress& addrConnect, CSemaphoreGrant *grantOu
 void ThreadMessageHandler(void* parg)
 {
     // Make this thread recognisable as the message handling thread
-    RenameThread("bitcoin-msghand");
+    RenameThread("bytecoin-msghand");
 
     try
     {
@@ -1824,7 +1824,7 @@ void static Discover()
 void StartNode(void* parg)
 {
     // Make this thread recognisable as the startup thread
-    RenameThread("bitcoin-start");
+    RenameThread("bytecoin-start");
 
     if (semOutbound == NULL) {
         // initialize semaphore
@@ -1876,7 +1876,7 @@ void StartNode(void* parg)
         printf("Error; NewThread(ThreadDumpAddress) failed\n");
 
     // Generate coins in the background
-    GenerateBitcoins(GetBoolArg("-gen", false), pwalletMain);
+    GenerateBytecoins(GetBoolArg("-gen", false), pwalletMain);
 }
 
 bool StopNode()
@@ -1902,7 +1902,7 @@ bool StopNode()
     if (vnThreadsRunning[THREAD_SOCKETHANDLER] > 0) printf("ThreadSocketHandler still running\n");
     if (vnThreadsRunning[THREAD_OPENCONNECTIONS] > 0) printf("ThreadOpenConnections still running\n");
     if (vnThreadsRunning[THREAD_MESSAGEHANDLER] > 0) printf("ThreadMessageHandler still running\n");
-    if (vnThreadsRunning[THREAD_MINER] > 0) printf("ThreadBitcoinMiner still running\n");
+    if (vnThreadsRunning[THREAD_MINER] > 0) printf("ThreadBytecoinMiner still running\n");
     if (vnThreadsRunning[THREAD_RPCLISTENER] > 0) printf("ThreadRPCListener still running\n");
     if (vnThreadsRunning[THREAD_RPCHANDLER] > 0) printf("ThreadsRPCServer still running\n");
 #ifdef USE_UPNP
