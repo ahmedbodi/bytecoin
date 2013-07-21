@@ -110,7 +110,7 @@
         <bool>true</bool>
        </property>
        <property name="text">
-        <string>Copyright &amp;copy; 2013 The Bitcoin developers</string>
+        <string>Copyright &amp;copy; 2013 The Bytecoin developers</string>
        </property>
        <property name="textFormat">
         <enum>Qt::RichText</enum>
