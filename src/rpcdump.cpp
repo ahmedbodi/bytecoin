@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "init.h" // for pwalletMain
-#include "bitcoinrpc.h"
+#include "bytecoinrpc.h"
 #include "ui_interface.h"
 #include "base58.h"
 
@@ -36,7 +36,7 @@ Value importprivkey(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() < 1 || params.size() > 3)
         throw runtime_error(
-            "importprivkey <bitcoinprivkey> [label] [rescan=true]\n"
+            "importprivkey <bytecoinprivkey> [label] [rescan=true]\n"
             "Adds a private key (as returned by dumpprivkey) to your wallet.");
 
     string strSecret = params[0].get_str();
@@ -49,7 +49,7 @@ Value importprivkey(const Array& params, bool fHelp)
     if (params.size() > 2)
         fRescan = params[2].get_bool();
 
-    CBitcoinSecret vchSecret;
+    CBytecoinSecret vchSecret;
     bool fGood = vchSecret.SetString(strSecret);
 
     if (!fGood) throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid private key");
@@ -81,13 +81,13 @@ Value dumpprivkey(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "dumpprivkey <bitcoinaddress>\n"
-            "Reveals the private key corresponding to <bitcoinaddress>.");
+            "dumpprivkey <bytecoinaddress>\n"
+            "Reveals the private key corresponding to <bytecoinaddress>.");
 
     string strAddress = params[0].get_str();
-    CBitcoinAddress address;
+    CBytecoinAddress address;
     if (!address.SetString(strAddress))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Bitcoin address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Bytecoin address");
     CKeyID keyID;
     if (!address.GetKeyID(keyID))
         throw JSONRPCError(RPC_TYPE_ERROR, "Address does not refer to a key");
@@ -95,5 +95,5 @@ Value dumpprivkey(const Array& params, bool fHelp)
     bool fCompressed;
     if (!pwalletMain->GetSecret(keyID, vchSecret, fCompressed))
         throw JSONRPCError(RPC_WALLET_ERROR, "Private key for address " + strAddress + " is not known");
-    return CBitcoinSecret(vchSecret, fCompressed).ToString();
+    return CBytecoinSecret(vchSecret, fCompressed).ToString();
 }

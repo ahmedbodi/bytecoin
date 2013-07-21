@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Bytecoin
+Comment=Bytecoin P2P Cryptocurrency
+Comment[fr]=Bytecoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Bytecoin, eşten eşe kriptografik sanal para birimi
+Exec=/usr/bin/bytecoin-qt
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/bytecoin80.xpm
+MimeType=x-scheme-handler/bytecoin;
+Categories=Office;

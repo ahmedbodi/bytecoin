@@ -1,8 +1,8 @@
 // Copyright (c) 2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef BITCOIN_BLOOM_H
-#define BITCOIN_BLOOM_H
+#ifndef BYTECOIN_BLOOM_H
+#define BYTECOIN_BLOOM_H
 
 #include <vector>
 
@@ -85,4 +85,4 @@ public:
     bool IsRelevantAndUpdate(const CTransaction& tx, const uint256& hash);
 };
 
-#endif /* BITCOIN_BLOOM_H */
+#endif /* BYTECOIN_BLOOM_H */

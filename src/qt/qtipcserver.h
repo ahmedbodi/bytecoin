@@ -3,12 +3,12 @@
 
 #include <string>
 
-// Define Bitcoin-Qt message queue name for mainnet
-#define BITCOINURI_QUEUE_NAME_MAINNET "BitcoinURI"
-// Define Bitcoin-Qt message queue name for testnet
-#define BITCOINURI_QUEUE_NAME_TESTNET "BitcoinURI-testnet"
+// Define Bytecoin-Qt message queue name for mainnet
+#define BYTECOINURI_QUEUE_NAME_MAINNET "BytecoinURI"
+// Define Bytecoin-Qt message queue name for testnet
+#define BYTECOINURI_QUEUE_NAME_TESTNET "BytecoinURI-testnet"
 
-extern std::string strBitcoinURIQueueName;
+extern std::string strBytecoinURIQueueName;
 
 void ipcScanRelay(int argc, char *argv[]);
 void ipcInit(int argc, char *argv[]);
