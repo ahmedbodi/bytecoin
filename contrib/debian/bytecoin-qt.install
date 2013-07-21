@@ -1,0 +1,5 @@
+bytecoin-qt usr/bin
+share/pixmaps/bytecoin32.xpm usr/share/pixmaps
+share/pixmaps/bytecoin80.xpm usr/share/pixmaps
+debian/bytecoin-qt.desktop usr/share/applications
+debian/bytecoin-qt.protocol usr/share/kde4/services/

@@ -5,7 +5,7 @@
 
 #include "txdb.h"
 #include "walletdb.h"
-#include "bitcoinrpc.h"
+#include "bytecoinrpc.h"
 #include "net.h"
 #include "init.h"
 #include "util.h"
@@ -51,7 +51,7 @@ void ExitTimeout(void* parg)
 void StartShutdown()
 {
 #ifdef QT_GUI
-    // ensure we leave the Qt main loop for a clean GUI exit (Shutdown() is called in bitcoin.cpp afterwards)
+    // ensure we leave the Qt main loop for a clean GUI exit (Shutdown() is called in bytecoin.cpp afterwards)
     uiInterface.QueueShutdown();
 #else
     // Without UI, Shutdown() can simply be started in a new thread
@@ -67,7 +67,7 @@ void Shutdown(void* parg)
     static bool fTaken;
 
     // Make this thread recognisable as the shutdown thread
-    RenameThread("bitcoin-shutoff");
+    RenameThread("bytecoin-shutoff");
 
     bool fFirstThread = false;
     {
@@ -106,10 +106,10 @@ void Shutdown(void* parg)
         delete pwalletMain;
         NewThread(ExitTimeout, NULL);
         Sleep(50);
-        printf("Bitcoin exited\n\n");
+        printf("Bytecoin exited\n\n");
         fExit = true;
 #ifndef QT_GUI
-        // ensure non-UI client gets exited here, but let Bitcoin-Qt reach 'return 0;' in bitcoin.cpp
+        // ensure non-UI client gets exited here, but let Bytecoin-Qt reach 'return 0;' in bytecoin.cpp
         exit(0);
 #endif
     }
@@ -149,7 +149,7 @@ bool AppInit(int argc, char* argv[])
         //
         // Parameters
         //
-        // If Qt is used, parameters/bytecoin.conf are parsed in qt/bitcoin.cpp's main()
+        // If Qt is used, parameters/bytecoin.conf are parsed in qt/bytecoin.cpp's main()
         ParseParameters(argc, argv);
         if (!boost::filesystem::is_directory(GetDataDir(false)))
         {
@@ -160,13 +160,13 @@ bool AppInit(int argc, char* argv[])
 
         if (mapArgs.count("-?") || mapArgs.count("--help"))
         {
-            // First part of help message is specific to bitcoind / RPC client
-            std::string strUsage = _("Bitcoin version") + " " + FormatFullVersion() + "\n\n" +
+            // First part of help message is specific to bytecoind / RPC client
+            std::string strUsage = _("Bytecoin version") + " " + FormatFullVersion() + "\n\n" +
                 _("Usage:") + "\n" +
-                  "  bitcoind [options]                     " + "\n" +
-                  "  bitcoind [options] <command> [params]  " + _("Send command to -server or bitcoind") + "\n" +
-                  "  bitcoind [options] help                " + _("List commands") + "\n" +
-                  "  bitcoind [options] help <command>      " + _("Get help for a command") + "\n";
+                  "  bytecoind [options]                     " + "\n" +
+                  "  bytecoind [options] <command> [params]  " + _("Send command to -server or bytecoind") + "\n" +
+                  "  bytecoind [options] help                " + _("List commands") + "\n" +
+                  "  bytecoind [options] help <command>      " + _("Get help for a command") + "\n";
 
             strUsage += "\n" + HelpMessage();
 
@@ -176,7 +176,7 @@ bool AppInit(int argc, char* argv[])
 
         // Command-line RPC
         for (int i = 1; i < argc; i++)
-            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "bitcoin:"))
+            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "bytecoin:"))
                 fCommandLine = true;
 
         if (fCommandLine)
@@ -202,7 +202,7 @@ int main(int argc, char* argv[])
 {
     bool fRet = false;
 
-    // Connect bitcoind signal handlers
+    // Connect bytecoind signal handlers
     noui_connect();
 
     fRet = AppInit(argc, argv);
@@ -244,7 +244,7 @@ std::string HelpMessage()
     string strUsage = _("Options:") + "\n" +
         "  -?                     " + _("This help message") + "\n" +
         "  -conf=<file>           " + _("Specify configuration file (default: bytecoin.conf)") + "\n" +
-        "  -pid=<file>            " + _("Specify pid file (default: bitcoind.pid)") + "\n" +
+        "  -pid=<file>            " + _("Specify pid file (default: bytecoind.pid)") + "\n" +
         "  -gen                   " + _("Generate coins") + "\n" +
         "  -gen=0                 " + _("Don't generate coins") + "\n" +
         "  -datadir=<dir>         " + _("Specify data directory") + "\n" +
@@ -316,7 +316,7 @@ std::string HelpMessage()
         "  -blockmaxsize=<n>      "   + _("Set maximum block size in bytes (default: 250000)") + "\n" +
         "  -blockprioritysize=<n> "   + _("Set maximum size of high-priority/low-fee transactions in bytes (default: 27000)") + "\n" +
 
-        "\n" + _("SSL options: (see the Bitcoin Wiki for SSL setup instructions)") + "\n" +
+        "\n" + _("SSL options: (see the Bytecoin Wiki for SSL setup instructions)") + "\n" +
         "  -rpcssl                                  " + _("Use OpenSSL (https) for JSON-RPC connections") + "\n" +
         "  -rpcsslcertificatechainfile=<file.cert>  " + _("Server certificate file (default: server.cert)") + "\n" +
         "  -rpcsslprivatekeyfile=<file.pem>         " + _("Server private key (default: server.pem)") + "\n" +
@@ -345,7 +345,7 @@ struct CImportData {
 void ThreadImport(void *data) {
     CImportData *import = reinterpret_cast<CImportData*>(data);
 
-    RenameThread("bitcoin-loadblk");
+    RenameThread("bytecoin-loadblk");
 
     vnThreadsRunning[THREAD_IMPORT]++;
 
@@ -401,7 +401,7 @@ void ThreadImport(void *data) {
     vnThreadsRunning[THREAD_IMPORT]--;
 }
 
-/** Initialize bitcoin.
+/** Initialize bytecoin.
  *  @pre Parameters should be parsed and config file should be read.
  */
 bool AppInit2()
@@ -553,7 +553,7 @@ bool AppInit2()
 
     std::string strDataDir = GetDataDir().string();
 
-    // Make sure only a single Bitcoin process is using the data directory.
+    // Make sure only a single Bytecoin process is using the data directory.
     boost::filesystem::path pathLockFile = GetDataDir() / ".lock";
     FILE* file = fopen(pathLockFile.string().c_str(), "a"); // empty lock file; created if it doesn't exist.
     if (file) fclose(file);
@@ -586,7 +586,7 @@ bool AppInit2()
     if (GetBoolArg("-shrinkdebugfile", !fDebug))
         ShrinkDebugFile();
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    printf("Bitcoin version %s (%s)\n", FormatFullVersion().c_str(), CLIENT_DATE.c_str());
+    printf("Bytecoin version %s (%s)\n", FormatFullVersion().c_str(), CLIENT_DATE.c_str());
     printf("Using OpenSSL version %s\n", SSLeay_version(SSLEAY_VERSION));
     if (!fLogTimestamps)
         printf("Startup time: %s\n", DateTimeStrFormat("%Y-%m-%d %H:%M:%S", GetTime()).c_str());
@@ -595,7 +595,7 @@ bool AppInit2()
     std::ostringstream strErrors;
 
     if (fDaemon)
-        fprintf(stdout, "Bitcoin server starting\n");
+        fprintf(stdout, "Bytecoin server starting\n");
 
     if (nScriptCheckThreads) {
         printf("Using %u threads for script verification\n", nScriptCheckThreads);
@@ -860,7 +860,7 @@ bool AppInit2()
         return InitError(_("You need to rebuild the databases using -reindex to change -txindex"));
 
     // as LoadBlockIndex can take several minutes, it's possible the user
-    // requested to kill bitcoin-qt during the last operation. If so, exit.
+    // requested to kill bytecoin-qt during the last operation. If so, exit.
     // As the program has not fully started yet, Shutdown() is possibly overkill.
     if (fRequestShutdown)
     {
@@ -917,10 +917,10 @@ bool AppInit2()
             InitWarning(msg);
         }
         else if (nLoadWalletRet == DB_TOO_NEW)
-            strErrors << _("Error loading wallet.dat: Wallet requires newer version of Bitcoin") << "\n";
+            strErrors << _("Error loading wallet.dat: Wallet requires newer version of Bytecoin") << "\n";
         else if (nLoadWalletRet == DB_NEED_REWRITE)
         {
-            strErrors << _("Wallet needed to be rewritten: restart Bitcoin to complete") << "\n";
+            strErrors << _("Wallet needed to be rewritten: restart Bytecoin to complete") << "\n";
             printf("%s", strErrors.str().c_str());
             return InitError(strErrors.str());
         }

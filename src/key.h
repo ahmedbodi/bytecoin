@@ -2,8 +2,8 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef BITCOIN_KEY_H
-#define BITCOIN_KEY_H
+#ifndef BYTECOIN_KEY_H
+#define BYTECOIN_KEY_H
 
 #include <stdexcept>
 #include <vector>

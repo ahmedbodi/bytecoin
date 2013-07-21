@@ -1,0 +1,2 @@
+debian/bin/bytecoind usr/bin
+src/bytecoind usr/lib/bytecoin

@@ -26,8 +26,8 @@ using namespace boost;
 using namespace boost::interprocess;
 using namespace boost::posix_time;
 
-// holds Bitcoin-Qt message queue name (initialized in bitcoin.cpp)
-std::string strBitcoinURIQueueName;
+// holds Bytecoin-Qt message queue name (initialized in bytecoin.cpp)
+std::string strBytecoinURIQueueName;
 
 #if defined MAC_OSX || defined __FreeBSD__
 // URI handling not implemented on OSX yet
@@ -45,11 +45,11 @@ static bool ipcScanCmd(int argc, char *argv[], bool fRelay)
     bool fSent = false;
     for (int i = 1; i < argc; i++)
     {
-        if (boost::algorithm::istarts_with(argv[i], "bitcoin:"))
+        if (boost::algorithm::istarts_with(argv[i], "bytecoin:"))
         {
             const char *strURI = argv[i];
             try {
-                boost::interprocess::message_queue mq(boost::interprocess::open_only, strBitcoinURIQueueName.c_str());
+                boost::interprocess::message_queue mq(boost::interprocess::open_only, strBytecoinURIQueueName.c_str());
                 if (mq.try_send(strURI, strlen(strURI), 0))
                     fSent = true;
                 else if (fRelay)
@@ -78,7 +78,7 @@ void ipcScanRelay(int argc, char *argv[])
 static void ipcThread(void* pArg)
 {
     // Make this thread recognisable as the GUI-IPC thread
-    RenameThread("bitcoin-gui-ipc");
+    RenameThread("bytecoin-gui-ipc");
 
     try
     {
@@ -115,7 +115,7 @@ static void ipcThread2(void* pArg)
     }
 
     // Remove message queue
-    message_queue::remove(strBitcoinURIQueueName.c_str());
+    message_queue::remove(strBytecoinURIQueueName.c_str());
     // Cleanup allocated memory
     delete mq;
 }
@@ -128,9 +128,9 @@ void ipcInit(int argc, char *argv[])
     unsigned int nPriority = 0;
 
     try {
-        mq = new message_queue(open_or_create, strBitcoinURIQueueName.c_str(), 2, MAX_URI_LENGTH);
+        mq = new message_queue(open_or_create, strBytecoinURIQueueName.c_str(), 2, MAX_URI_LENGTH);
 
-        // Make sure we don't lose any bitcoin: URIs
+        // Make sure we don't lose any bytecoin: URIs
         for (int i = 0; i < 2; i++)
         {
             ptime d = boost::posix_time::microsec_clock::universal_time() + millisec(1);
@@ -142,11 +142,11 @@ void ipcInit(int argc, char *argv[])
                 break;
         }
 
-        // Make sure only one bitcoin instance is listening
-        message_queue::remove(strBitcoinURIQueueName.c_str());
+        // Make sure only one bytecoin instance is listening
+        message_queue::remove(strBytecoinURIQueueName.c_str());
         delete mq;
 
-        mq = new message_queue(open_or_create, strBitcoinURIQueueName.c_str(), 2, MAX_URI_LENGTH);
+        mq = new message_queue(open_or_create, strBytecoinURIQueueName.c_str(), 2, MAX_URI_LENGTH);
     }
     catch (interprocess_exception &ex) {
         printf("ipcInit() - boost interprocess exception #%d: %s\n", ex.get_error_code(), ex.what());
