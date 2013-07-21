@@ -1,9 +1,7 @@
 Bytecoin integration/staging tree
 ================================
 
-http://www.bitcoin.org
-
-Copyright (c) 2009-2012 Bitcoin Developers
+Copyright (c) 2009-2012 Bytecoin Developers
 
 What is Bytecoin?
 ----------------
@@ -14,8 +12,10 @@ with no central authority: managing transactions and issuing money are carried
 out collectively by the network. Bytecoin is also the name of the open source
 software which enables the use of this currency.
 
-For more information, as well as an immediately useable, binary version of
-the Bytecoin client sofware, see http://www.bitcoin.org.
+Running The Client
+---------------------
+To run the client compile from source or fetch the clients from the original thread.
+To join the network the bytecoin.conf file must be placed in the appdata/bytecoin directory 
 
 License
 -------
