@@ -1179,7 +1179,7 @@ void DNSAddressSeed()
 //ixcoin
 unsigned int pnSeed[] =
 {
-  0xb10f5442, 0x99e16042, 0xaac76a26, 0xb20f5442, 0x74B347CE
+  0xb10f5442, 0x99e16042, 0xaac76a26, 0xb20f5442
 };
 
 
